@@ -3,21 +3,40 @@ var app = express();
 var cors = require('cors')
 var bodyParser = require('body-parser')
 
+var mysql      = require('mysql');
+var connection = mysql.createConnection({
+  host     : 'localhost',
+  user     : 'root',
+  password : '123456',
+  database : 'topic'
+});
+ 
+connection.connect();
 
 app.use(cors())
-
 app.use(bodyParser.json())
+
+
 app.get('/', function (req, res) {
   res.send('Hello World!');
 });
 
-app.post('/form_receiver',(req,res)=>{
-    var id = req.body.a; 
-    var password = req.body.b; 
- 
 
-	console.log(id,password)
+
+
+
+app.post('/form_receiver',(req,res)=>{
  
+ 
+    var sql = `INSERT INTO topic.testabc (abc, def) VALUES ('${req.body.a}','${req.body.b}')`
+		console.log(sql)
+      connection.query(sql, function (err, result) {
+        console.log(err);
+        console.log(result);
+         res.status(200).json(result);
+      });
+ 
+	
  
 
 })
